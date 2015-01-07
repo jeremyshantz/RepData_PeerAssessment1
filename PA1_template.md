@@ -1,14 +1,10 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-author: "Jeremy Shantz"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
+Jeremy Shantz  
 
 ## Loading and preprocessing the data
 
-```{r echo=TRUE}
+
+```r
 suppressPackageStartupMessages(library(xtable))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(ggplot2))
@@ -20,17 +16,22 @@ data <- read.csv('./activity.csv')
 ## What is mean total number of steps taken per day?
 
 #### Store the step values, ignoring the missing values in the dataset.
-```{r echo=TRUE, results='asis'}
+
+```r
 steps <- subset(data, !is.na(steps), steps)[,1]
 ```
 
 #### Histogram of the total number of steps taken each day
-```{r echo=TRUE}
+
+```r
 hist(steps, main="Steps per day", xlab="Steps", ylim=range(0, 12000), col="red")
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
 #### Mean and median steps per day
-```{r echo=TRUE, results='asis'}
+
+```r
 # Display nicely by combining into a matrix to render as a table
 m <- matrix(c(mean(steps), median(steps)), 
             dimnames = list(c("mean", "median"), c('Steps per day')))
@@ -38,11 +39,20 @@ m <- matrix(c(mean(steps), median(steps)),
 print(xtable(m), type = "html")
 ```
 
+<!-- html table generated in R 3.1.2 by xtable 1.7-4 package -->
+<!-- Wed Jan  7 00:20:06 2015 -->
+<table border=1>
+<tr> <th>  </th> <th> Steps per day </th>  </tr>
+  <tr> <td align="right"> mean </td> <td align="right"> 37.38 </td> </tr>
+  <tr> <td align="right"> median </td> <td align="right"> 0.00 </td> </tr>
+   </table>
+
 ## What is the average daily activity pattern?
 
 #### Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
-```{r echo=TRUE, results='asis' }
+
+```r
 # Remove NAs from the data set
 without.na <- data[!is.na(data$steps),]
 # Group by the interval column and summarize average steps
@@ -55,28 +65,33 @@ plot(steps ~ interval, data = grouped.by.interval, type = 'l',
      xlab = 'Interval', ylab = 'Average steps')
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
+
 #### Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
-```{r echo=TRUE}
+
+```r
 maxInterval <- grouped.by.interval[grouped.by.interval$steps == 
                                        max(grouped.by.interval$steps),1][[1]]
 ```
 
-The **`r maxInterval`** interval contains the maximum number of steps (averaged across all dates in the dataset).
+The **835** interval contains the maximum number of steps (averaged across all dates in the dataset).
 
 ## Imputing missing values
 
 #### The total number of missing values in the dataset (i.e. the total number of rows with NAs)
-```{r echo=TRUE}
+
+```r
 missing.row.count <- length(data[is.na(data$steps),1])
 ```
 
-There are **`r missing.row.count`** rows where steps are not available.
+There are **2304** rows where steps are not available.
 
 #### Filling in all of the missing values in the dataset
 
 Our strategy is to replace with NAs with the average value for that interval calculated across all the days in the dataset.
 
-```{r echo=TRUE}
+
+```r
 # Create a new dataset that is equal to the original dataset.....
 imputed = data
 #  .....but with the missing data filled in.
@@ -89,15 +104,17 @@ imputed$steps <- ifelse(is.na(data$steps),
 ```
 
 #### Histogram of the total number of steps taken each day (with imputed values)
-```{r echo=TRUE}
 
+```r
 hist(imputed$steps, main="Steps per day", xlab="Steps", 
      ylim=range(0, 12000), col="red")
-
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
+
 #### Mean and median steps per day (with imputed values)
-```{r echo=TRUE, results='asis'}
+
+```r
 # Display nicely by combining into a matrix to render as a table
 m <- matrix(c(mean(imputed$steps), median(imputed$steps)), 
             dimnames = list(c("mean", "median"), c('Steps per day')))
@@ -105,15 +122,24 @@ m <- matrix(c(mean(imputed$steps), median(imputed$steps)),
 print(xtable(m), type = "html")
 ```
 
+<!-- html table generated in R 3.1.2 by xtable 1.7-4 package -->
+<!-- Wed Jan  7 00:20:06 2015 -->
+<table border=1>
+<tr> <th>  </th> <th> Steps per day </th>  </tr>
+  <tr> <td align="right"> mean </td> <td align="right"> 37.38 </td> </tr>
+  <tr> <td align="right"> median </td> <td align="right"> 0.00 </td> </tr>
+   </table>
+
 #### Do these values differ from the estimates from the first part of the assignment? 
 These values do not differ from the estimates from the first part of the assignment. There has been no impact from imputing missing data on the estimates of the total daily number of steps.  
 
-* When we removed NAs, the length of the steps set was `r length(steps)` and the mean was `r mean(steps)`.
-* With imputed values replacing NAs, the length is `r length(imputed$steps)` and the mean is `r mean(imputed$steps)`.
+* When we removed NAs, the length of the steps set was 15264 and the mean was 37.3825996.
+* With imputed values replacing NAs, the length is 17568 and the mean is 37.3825996.
 * The median is 
 
 ## Differences in activity patterns between weekdays and weekends?
-```{r}
+
+```r
 # Use the dataset with the filled-in missing values for this part.
 # Create a new factor variable in the dataset 
 #   with two levels – “weekday” and “weekend” 
@@ -127,9 +153,12 @@ imputed$week <- factor(week.part, levels = c('weekend', 'weekday'),
 
 Panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
  
-```{r}
+
+```r
 ggplot(imputed, aes(interval, steps)) + geom_line() + facet_grid(week~.)
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
 
     **Your plot will look different from the one above** because you will be 
     using the activity monitor data. Note that the above plot was made using 
