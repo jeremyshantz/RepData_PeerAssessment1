@@ -1,5 +1,10 @@
-# Reproducible Research: Peer Assessment 1
-Jeremy Shantz  
+---
+title: "Reproducible Research: Peer Assessment 1"
+author: "Jeremy Shantz"
+output: 
+  html_document:
+    keep_md: true
+---
 
 ## Loading and preprocessing the data
 
@@ -27,7 +32,7 @@ steps <- subset(data, !is.na(steps), steps)[,1]
 hist(steps, main="Steps per day", xlab="Steps", ylim=range(0, 12000), col="red")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
 
 #### Mean and median steps per day
 
@@ -40,7 +45,7 @@ print(xtable(m), type = "html")
 ```
 
 <!-- html table generated in R 3.1.2 by xtable 1.7-4 package -->
-<!-- Wed Jan  7 00:20:06 2015 -->
+<!-- Wed Jan  7 00:29:57 2015 -->
 <table border=1>
 <tr> <th>  </th> <th> Steps per day </th>  </tr>
   <tr> <td align="right"> mean </td> <td align="right"> 37.38 </td> </tr>
@@ -65,7 +70,7 @@ plot(steps ~ interval, data = grouped.by.interval, type = 'l',
      xlab = 'Interval', ylab = 'Average steps')
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
 
 #### Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
@@ -94,6 +99,7 @@ Our strategy is to replace with NAs with the average value for that interval cal
 ```r
 # Create a new dataset that is equal to the original dataset.....
 imputed = data
+
 #  .....but with the missing data filled in.
 # If steps is NA, store the average for that interval (already calculated),
 #   otherwise, store the steps value
@@ -106,11 +112,11 @@ imputed$steps <- ifelse(is.na(data$steps),
 #### Histogram of the total number of steps taken each day (with imputed values)
 
 ```r
-hist(imputed$steps, main="Steps per day", xlab="Steps", 
-     ylim=range(0, 12000), col="red")
+hist(imputed$steps, main="Steps per day", xlab="Steps", ylim=range(0, 12000), 
+     col="red")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
 
 #### Mean and median steps per day (with imputed values)
 
@@ -123,7 +129,7 @@ print(xtable(m), type = "html")
 ```
 
 <!-- html table generated in R 3.1.2 by xtable 1.7-4 package -->
-<!-- Wed Jan  7 00:20:06 2015 -->
+<!-- Wed Jan  7 00:29:58 2015 -->
 <table border=1>
 <tr> <th>  </th> <th> Steps per day </th>  </tr>
   <tr> <td align="right"> mean </td> <td align="right"> 37.38 </td> </tr>
@@ -135,7 +141,7 @@ These values do not differ from the estimates from the first part of the assignm
 
 * When we removed NAs, the length of the steps set was 15264 and the mean was 37.3825996.
 * With imputed values replacing NAs, the length is 17568 and the mean is 37.3825996.
-* The median is 
+* The median is zero in both cases.
 
 ## Differences in activity patterns between weekdays and weekends?
 
@@ -158,7 +164,7 @@ Panel plot containing a time series plot (i.e. type = "l") of the 5-minute inter
 ggplot(imputed, aes(interval, steps)) + geom_line() + facet_grid(week~.)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
 
     **Your plot will look different from the one above** because you will be 
     using the activity monitor data. Note that the above plot was made using 

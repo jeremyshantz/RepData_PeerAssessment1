@@ -79,6 +79,7 @@ Our strategy is to replace with NAs with the average value for that interval cal
 ```{r echo=TRUE}
 # Create a new dataset that is equal to the original dataset.....
 imputed = data
+
 #  .....but with the missing data filled in.
 # If steps is NA, store the average for that interval (already calculated),
 #   otherwise, store the steps value
@@ -91,8 +92,8 @@ imputed$steps <- ifelse(is.na(data$steps),
 #### Histogram of the total number of steps taken each day (with imputed values)
 ```{r echo=TRUE}
 
-hist(imputed$steps, main="Steps per day", xlab="Steps", 
-     ylim=range(0, 12000), col="red")
+hist(imputed$steps, main="Steps per day", xlab="Steps", ylim=range(0, 12000), 
+     col="red")
 
 ```
 
@@ -110,7 +111,7 @@ These values do not differ from the estimates from the first part of the assignm
 
 * When we removed NAs, the length of the steps set was `r length(steps)` and the mean was `r mean(steps)`.
 * With imputed values replacing NAs, the length is `r length(imputed$steps)` and the mean is `r mean(imputed$steps)`.
-* The median is 
+* The median is zero in both cases.
 
 ## Differences in activity patterns between weekdays and weekends?
 ```{r}
