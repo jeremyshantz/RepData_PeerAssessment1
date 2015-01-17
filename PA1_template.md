@@ -1,18 +1,20 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-author: "Jeremy Shantz"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
+Jeremy Shantz  
 
 ## Loading and preprocessing the data
+
+We downloaded the data set from [here](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip) on 2014-01-09.
 
 
 ```r
 suppressPackageStartupMessages(library(xtable))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(ggplot2))
+data.url <- 'https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip'
+
+if (!file.exists('./activity.zip')) {
+    download.file(data.url, './activity.zip', method='curl')
+}
 
 unzip('./activity.zip')
 data <- read.csv('./activity.csv')
@@ -32,7 +34,7 @@ steps <- subset(data, !is.na(steps), steps)[,1]
 hist(steps, main="Steps per day", xlab="Steps", ylim=range(0, 12000), col="red")
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
 #### Mean and median steps per day
 
@@ -45,7 +47,7 @@ print(xtable(m), type = "html")
 ```
 
 <!-- html table generated in R 3.1.2 by xtable 1.7-4 package -->
-<!-- Wed Jan  7 00:29:57 2015 -->
+<!-- Sat Jan 17 18:20:35 2015 -->
 <table border=1>
 <tr> <th>  </th> <th> Steps per day </th>  </tr>
   <tr> <td align="right"> mean </td> <td align="right"> 37.38 </td> </tr>
@@ -70,7 +72,7 @@ plot(steps ~ interval, data = grouped.by.interval, type = 'l',
      xlab = 'Interval', ylab = 'Average steps')
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
 #### Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
@@ -116,7 +118,7 @@ hist(imputed$steps, main="Steps per day", xlab="Steps", ylim=range(0, 12000),
      col="red")
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
 
 #### Mean and median steps per day (with imputed values)
 
@@ -129,7 +131,7 @@ print(xtable(m), type = "html")
 ```
 
 <!-- html table generated in R 3.1.2 by xtable 1.7-4 package -->
-<!-- Wed Jan  7 00:29:58 2015 -->
+<!-- Sat Jan 17 18:20:35 2015 -->
 <table border=1>
 <tr> <th>  </th> <th> Steps per day </th>  </tr>
   <tr> <td align="right"> mean </td> <td align="right"> 37.38 </td> </tr>
@@ -164,7 +166,7 @@ Panel plot containing a time series plot (i.e. type = "l") of the 5-minute inter
 ggplot(imputed, aes(interval, steps)) + geom_line() + facet_grid(week~.)
 ```
 
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
 
     **Your plot will look different from the one above** because you will be 
     using the activity monitor data. Note that the above plot was made using 
